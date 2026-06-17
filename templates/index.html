@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Inventory Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    padding:15px;
+}
+
+
+.app-layout{
+    display:flex;
+    gap:15px;
+    min-height:calc(100vh - 30px);
+}
+
+.sidebar{
+
+    width:240px;
+
+    background:linear-gradient(180deg,#4f46e5,#312e81);
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.15);
+
+    display:flex;
+
+    flex-direction:column;
+
+    color:white;
+}
+
+.profile{
+
+    text-align:center;
+
+    padding-bottom:20px;
+
+    border-bottom:1px solid rgba(255,255,255,.3);
+
+}
+.avatar{
+
+    width:65px;
+
+    height:65px;
+
+    background:white;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+.avatar span{
+
+    width:42px;
+
+    height:42px;
+
+    background:#4f46e5;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:white;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+.profile h3{
+
+    margin-top:12px;
+
+}
+.profile p{
+
+    color:#e0e7ff;
+
+    font-size:14px;
+
+}
+.user-details{
+
+    margin-top:20px;
+
+}
+.detail{
+
+    background:rgba(255,255,255,.15);
+
+    padding:10px;
+
+    border-radius:10px;
+
+    margin-bottom:10px;
+
+    font-size:14px;
+
+}
+.sidebar-bottom{
+
+    margin-top:auto;
+
+}
+.bottom-btn{
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-top:10px;
+
+    cursor:pointer;
+
+    color:white;
+
+}
+.bottom-btn:hover{
+
+    background:rgba(255,255,255,.2);
+
+}
+.logout{
+
+    background:rgba(255,255,255,.15);
+
+}
+
+.main-content{
+
+    flex:1;
+
+}
+
+.header{
+
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:18px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+}
+
+.header h1{
+
+    font-size:25px;
+
+}
+.header p{
+
+    font-size:13px;
+
+}
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+}
+
+.card{
+
+    background:white;
+
+    padding:12px;
+
+    border-radius:14px;
+
+    text-align:center;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.card h2{
+
+    color:#4f46e5;
+
+    font-size:22px;
+
+}
+
+.card p{
+
+    color:#64748b;
+
+    font-size:12px;
+
+}
+
+.section{
+
+    background:white;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    margin-bottom:15px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.section h2{
+
+    font-size:18px;
+
+    margin-bottom:10px;
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+
+    gap:10px;
+
+}
+
+input{
+
+    padding:8px;
+
+    border:1px solid #ddd;
+
+    border-radius:7px;
+
+}
+
+.add-btn{
+
+    background:#4f46e5;
+
+    color:white;
+
+    border:none;
+
+    border-radius:7px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    background:#4f46e5;
+
+    color:white;
+
+    padding:8px;
+
+}
+
+
+td{
+
+    padding:7px;
+
+    text-align:center;
+
+    border:1px solid #ddd;
+
+    font-size:13px;
+
+}
+tr:nth-child(even){
+
+    background:#f8fafc;
+
+}
+
+.stock-low{
+
+    color:red;
+
+    font-weight:bold;
+
+}
+
+
+.stock-good{
+
+    color:green;
+
+    font-weight:bold;
+
+}
+
+.status{
+
+    padding:4px 10px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+}
+
+
+
+.in-stock{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.low-stock{
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+}
+
+.out-stock{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+}
+
+.quantity-box{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:5px;
+
+}
+
+.qty-btn{
+
+    width:28px;
+
+    height:26px;
+
+    border:none;
+
+    border-radius:7px;
+
+    cursor:pointer;
+
+}
+
+.minus{
+
+    background:#fee2e2;
+
+    color:red;
+
+}
+
+.plus{
+
+    background:#dcfce7;
+
+    color:green;
+
+}
+
+.qty-value{
+
+    width:28px;
+
+    height:26px;
+
+    background:#f1f5f9;
+
+    border-radius:7px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.action-form{
+
+    display:inline;
+
+}
+
+</style>
+</head>
+<body>
+<div class="app-layout">
+
+
+<div class="sidebar">
+
+<div class="profile">
+<div class="avatar">
+<span>
+U
+</span>
+
+</div>
+<h3>Uzma</h3>
+
+<p>Inventory Admin</p>
+</div>
+<div class="user-details">
+<div class="detail">
+👤 Status: Active
+</div>
+<div class="detail">
+📦 Products: {{total_products}}
+</div>
+<div class="detail">
+
+⚡ Role: Manager
+
+</div>
+
+
+<div class="detail">
+
+🕒 Last Login: Today
+
+</div>
+</div>
+<div class="sidebar-bottom">
+
+
+<div class="bottom-btn">
+
+⚙ Settings
+
+</div>
+
+<div class="bottom-btn logout">
+
+🚪 Logout
+
+</div>
+
+</div>
+</div>
+
+<div class="main-content">
+
+<div class="header">
+
+<h1>📦 Inventory Management Dashboard</h1>
+
+<p>Manage stock and products efficiently</p>
+
+</div>
+
+<div class="cards">
+<div class="card">
+
+<h2>{{total_products}}</h2>
+
+<p>Total Products</p>
+
+</div>
+<div class="card">
+
+<h2>{{total_stock}}</h2>
+
+<p>Total Items</p>
+
+</div>
+<div class="card">
+
+<h2>{{low_stock}}</h2>
+
+<p>Low Stock</p>
+
+</div>
+<div class="card">
+
+<h2>{{out_stock}}</h2>
+
+<p>Out Of Stock</p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Add Product</h2>
+
+<form action="/add-product" method="post">
+
+<div class="form-grid">
+
+<input name="name" placeholder="Product Name" required>
+
+<input name="category" placeholder="Category" required>
+
+<input type="number" step="0.01" name="price" placeholder="Price" required>
+
+<input type="number" name="stock" placeholder="Stock" required>
+
+<button class="add-btn">
+
+Add Product
+
+</button>
+
+</div>
+</form>
+</div>
+
+<div class="section">
+<h2>Product Inventory</h2>
+
+<table>
+<tr>
+
+<th>ID</th>
+<th>Name</th>
+<th>Category</th>
+<th>Price</th>
+<th>Stock</th>
+<th>Status</th>
+<th>Actions</th>
+
+</tr>
+
+{% for product in products %}
+<tr>
+<td>{{product.id}}</td>
+
+
+<td>{{product.name}}</td>
+
+<td>{{product.category}}</td>
+
+<td>₹{{product.price}}</td>
+
+<td>
+
+<span class="{% if product.stock <=3 %}stock-low{% else %}stock-good{% endif %}">
+
+{{product.stock}}
+
+</span>
+
+</td>
+
+<td>
+
+{% if product.stock == 0 %}
+
+<span class="status out-stock">
+
+❌ Out-of-stock
+
+</span>
+
+{% elif product.stock <=3 %}
+
+<span class="status low-stock">
+
+⚠ Low Stock
+
+</span>
+
+{% else %}
+<span class="status in-stock">
+
+✔ In-Stock
+
+</span>
+
+{% endif %}
+
+</td>
+<td>
+
+<div class="quantity-box">
+
+{% if product.stock <= 0 %}
+
+<button
+    type="button"
+    class="qty-btn minus"
+    onclick="alert('❌ Negative stock is not allowed!')"
+>
+    −
+</button>
+
+{% else %}
+
+<form
+    class="action-form"
+    action="/update-stock/{{product.id}}/-1"
+    method="post"
+>
+
+<button class="qty-btn minus">
+    −
+</button>
+
+</form>
+
+{% endif %}
+
+<div class="qty-value">
+1
+</div>
+
+<form
+    class="action-form"
+    action="/update-stock/{{product.id}}/1"
+    method="post"
+>
+
+<button class="qty-btn plus">
+    +
+</button>
+
+</form>
+
+</div>
+
+</td>
+
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+</div>
+</body>
+
+</html>
