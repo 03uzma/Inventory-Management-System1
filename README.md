@@ -464,19 +464,19 @@ http://127.0.0.1:8000
 
 ## Products Added
 
-Screenshots/Basic Dashboard.png
+![Dahboard when products are added](Screenshots\Products-added.png)
 
 ## Low Stock Display
 
-![Low Stock Products](Screenshots\Low stock display.png)
+![Low Stock Products](Screenshots\Low-stock-display.png)
 
 ## Out of stock Indicator
 
-![Out-of-Stock Products](Screenshots\out of stock.png)
+![Out-of-Stock Products](Screenshots\out-of-stock.png)
 
 ## Negative Stock Prevention Pop-Up
 
-![Negative Stock prevention](Screenshots\Negative stock prevention.png)
+![Negative Stock prevention](Screenshots\Negative-stock-prevention.png)
 ---
 
 # Conclusion
