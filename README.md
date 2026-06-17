@@ -485,4 +485,7 @@ This project successfully fulfills all requirements of the Inventory Management 
 
 By leveraging FastAPI, SQLite, SQLAlchemy, and Jinja2, the solution demonstrates structured backend development, database integration, validation handling, and dashboard design while maintaining simplicity and scalability for future enhancements.
 
+---
+Submitted as part of a technical case study for an Associate Engineer evaluation.
+
 
