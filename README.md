@@ -464,7 +464,7 @@ http://127.0.0.1:8000
 
 ## Products Added
 
-![Dahboard when products are added](Screenshots\Products added.png)
+Screenshots/Basic Dashboard.png
 
 ## Low Stock Display
 
