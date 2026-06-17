@@ -460,7 +460,7 @@ http://127.0.0.1:8000
 
 ## Dashboard
 
-![Dashboard](Screenshots\Basic Dashboard.png)
+![Dashboard](Screenshots/Basic Dashboard.png)
 
 ## Products Added
 
