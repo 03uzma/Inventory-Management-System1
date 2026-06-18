@@ -8,19 +8,17 @@ from database import Base, engine, SessionLocal
 from models import Product
 from schemas import ProductCreate, StockUpdate
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("⚠️  Wiping existing database tables...")
-    Base.metadata.drop_all(bind=engine)
-    
-    print("🚀 Creating fresh database tables...")
+    print("🚀 Checking database tables...")
     Base.metadata.create_all(bind=engine)
-    
-    yield  # The application runs while paused here
-    
+
+    yield
+
     print("🛑 Shutting down application...")
 
-# Pass the lifespan handler into FastAPI
+
 app = FastAPI(lifespan=lifespan)
 
 templates = Jinja2Templates(directory="templates")
@@ -30,6 +28,7 @@ templates = Jinja2Templates(directory="templates")
 def home(request: Request):
     db = SessionLocal()
     products = db.query(Product).all()
+
     product_status = {}
 
     for product in products:
@@ -56,8 +55,8 @@ def home(request: Request):
             "total_products": total_products,
             "total_stock": total_stock,
             "low_stock": low_stock,
-            "out_stock": out_stock
-        }
+            "out_stock": out_stock,
+        },
     )
 
 
@@ -66,31 +65,28 @@ def add_product_form(
     name: str = Form(...),
     category: str = Form(...),
     price: float = Form(...),
-    stock: int = Form(...)
+    stock: int = Form(...),
 ):
     db = SessionLocal()
+
     product = Product(
         name=name,
         category=category,
         price=price,
-        stock=stock
+        stock=stock,
     )
+
     db.add(product)
     db.commit()
     db.close()
 
-    return RedirectResponse(
-        url="/",
-        status_code=303
-    )
+    return RedirectResponse(url="/", status_code=303)
 
 
 @app.post("/update-stock/{product_id}/{change}")
-def update_stock_from_ui(
-    product_id: int,
-    change: int
-):
+def update_stock_from_ui(product_id: int, change: int):
     db = SessionLocal()
+
     product = (
         db.query(Product)
         .filter(Product.id == product_id)
@@ -99,27 +95,27 @@ def update_stock_from_ui(
 
     if product:
         new_stock = product.stock + change
+
         if new_stock >= 0:
             product.stock = new_stock
             db.commit()
 
     db.close()
 
-    return RedirectResponse(
-        url="/",
-        status_code=303
-    )
+    return RedirectResponse(url="/", status_code=303)
 
 
 @app.post("/products")
 def add_product(product: ProductCreate):
     db: Session = SessionLocal()
+
     new_product = Product(
         name=product.name,
         category=product.category,
         price=product.price,
-        stock=product.stock
+        stock=product.stock,
     )
+
     db.add(new_product)
     db.commit()
     db.refresh(new_product)
@@ -130,7 +126,7 @@ def add_product(product: ProductCreate):
         "name": new_product.name,
         "category": new_product.category,
         "price": new_product.price,
-        "stock": new_product.stock
+        "stock": new_product.stock,
     }
 
 
@@ -143,11 +139,9 @@ def get_products():
 
 
 @app.put("/products/{product_id}/stock")
-def update_stock(
-    product_id: int,
-    stock_update: StockUpdate
-):
+def update_stock(product_id: int, stock_update: StockUpdate):
     db: Session = SessionLocal()
+
     product = (
         db.query(Product)
         .filter(Product.id == product_id)
@@ -165,6 +159,7 @@ def update_stock(
         return {"error": "Stock cannot be negative"}
 
     product.stock = new_stock
+
     db.commit()
     db.refresh(product)
     db.close()
@@ -174,20 +169,23 @@ def update_stock(
         "name": product.name,
         "category": product.category,
         "price": product.price,
-        "stock": product.stock
+        "stock": product.stock,
     }
 
 
 @app.get("/products/low-stock")
 def get_low_stock_products():
     db: Session = SessionLocal()
+
     products = (
         db.query(Product)
         .filter(
             Product.stock > 0,
-            Product.stock <= 3
+            Product.stock <= 3,
         )
         .all()
     )
+
     db.close()
+
     return products
